@@ -13,45 +13,48 @@ class App extends Component{
     ],
     showPersons: false
   }
-  switchNameHandler = () => {
+
+  togglePersonsHandler = () => {
+    let show = this.state.showPersons;
     this.setState({
-      showPersons: !this.state.showPersons
-    })
-  }
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        {name: "Max", age: 3},
-        {name: "Manu", age: 4},
-        {name: "Steph", age: 2},
-        {name: event.target.value, age: 29}
-      ]
+      showPersons: !show
     })
   }
 
+  deletePersonHandler = (personIndex) => {
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons})
+  }
+
   render(){
+    const style={
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '18px',
+      boxShadow: '0 2px 3px #ccc',
+      margin: '10px'
+    }
     let persons = null;
 
     // Pre re render
     if(this.state.showPersons){
-      persons = (
-        <div>
-          <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
-          <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>My hobby is racing</Person>
-          <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
-          <Person 
-            name={this.state.persons[3].name} 
-            age={this.state.persons[3].age} 
-            changed={this.nameChangedHandler}
-          />
-        </div>
-      );
+      persons = this.state.persons.map((person, index) => {
+              return (
+                <Person 
+                  click={() => this.deletePersonHandler(index)}
+                  name={person.name}
+                  age={person.age}
+                />
+              )
+      });
     }
 
     return (
       <div className="App">
         <h1> First App huhu </h1>
-        <button onClick={this.switchNameHandler.bind(this)}> Toggle Persons </button>
+        <button style={style} onClick={this.togglePersonsHandler}> Toggle Persons </button>
         { persons }
       </div>
     );
