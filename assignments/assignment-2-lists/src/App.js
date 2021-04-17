@@ -21,8 +21,10 @@ class App extends Component {
   clickChangehandler = (index) => {
     let chars = [...this.state.text];
     chars.splice(index,1);
+    let newtext = chars.join('');
     this.setState({
-      text: chars.join('')
+      text: newtext,
+      length: newtext.length
     })
   }
   render(){
